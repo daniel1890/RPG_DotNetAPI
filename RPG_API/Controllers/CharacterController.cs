@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RPG_API.DTOs.Character;
 using RPG_API.Models;
+using RPG_API.Services.CharacterService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +13,29 @@ namespace RPG_API.Controllers
     [Route("[controller]")]
     public class CharacterController : ControllerBase
     {
-        private static List<Character> characters = new List<Character>
-        {
-            new Character(),
-            new Character {Name = "Sam"}
-        };
+        private readonly ICharacterService _characterService;
 
-        [Route("GetAll")]
-        [HttpGet]
-        public IActionResult Get()
+        public CharacterController(ICharacterService characterService)
         {
-            return Ok(characters);
+            this._characterService = characterService;
         }
 
-        [Route("GetSingle")]
-        [HttpGet]
-        public IActionResult GetSingle()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> Get()
         {
-            return Ok(characters[0]);
+            return Ok(await _characterService.GetAllCharacters());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
+        {
+            return Ok(await _characterService.GetCharacterById(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCharacter(AddCharacterDTO newCharacter)
+        {
+            return Ok(await _characterService.AddCharacter(newCharacter));
         }
     }
 }

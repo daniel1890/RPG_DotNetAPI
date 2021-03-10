@@ -1,11 +1,12 @@
-﻿using System;
+﻿using RPG_API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RPG_API.Models
+namespace RPG_API.DTOs.Character
 {
-    public class Character
+    public class GetCharacterDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = "Frodo";
