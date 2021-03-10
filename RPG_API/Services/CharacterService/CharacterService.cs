@@ -1,4 +1,5 @@
-﻿using RPG_API.DTOs.Character;
+﻿using AutoMapper;
+using RPG_API.DTOs.Character;
 using RPG_API.Models;
 using System;
 using System.Collections.Generic;
@@ -15,20 +16,27 @@ namespace RPG_API.Services.CharacterService
             new Character { Id = 1, Name = "Sam"}
         };
 
+        private readonly IMapper _mapper;
+
+        public CharacterService(IMapper mapper)
+        {
+            this._mapper = mapper;
+        }
+
         public async Task<List<GetCharacterDTO>> AddCharacter(AddCharacterDTO newCharacter)
         {
-            _characters.Add(newCharacter);
-            return _characters;
+            _characters.Add(_mapper.Map<Character>(newCharacter));
+            return _characters.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
         }
 
         public async Task<List<GetCharacterDTO>> GetAllCharacters()
         {
-            return _characters;
+            return _characters.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
         }
 
         public async Task<GetCharacterDTO> GetCharacterById(int id)
         {
-            return _characters.FirstOrDefault(c => c.Id == id);
+            return _mapper.Map<GetCharacterDTO>(_characters.FirstOrDefault(c => c.Id == id));
         }
     }
 }

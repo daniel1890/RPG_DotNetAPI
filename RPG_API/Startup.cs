@@ -29,6 +29,7 @@ namespace RPG_API
         {
             services.AddControllers();
             services.AddScoped<ICharacterService, CharacterService>();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RPG_API", Version = "v1" });
